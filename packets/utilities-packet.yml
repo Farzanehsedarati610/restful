@@ -1,0 +1,24 @@
+name: Log Utility Packet
+
+on:
+  workflow_dispatch:
+
+jobs:
+  log-utilities:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Log Duke Energy Packet
+        run: echo "Duke Energy sweep: 700 N 13th St, 2020–2022, symbolic overlay" > packets/duke_$(date +%F).txt
+
+      - name: Hash and Commit
+        run: |
+          sha256sum packets/duke_$(date +%F).txt >> packets/duke_hashes.txt
+          git config user.name "FarzanehBot"
+          git config user.email "farzanehsedarati6@gmail.com"
+          git add packets/
+          git commit -m "Duke packet logged $(date +%F)"
+          git push
+

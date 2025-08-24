@@ -1,0 +1,24 @@
+name: Log Lodging Packet
+
+on:
+  workflow_dispatch:
+
+jobs:
+  log-lodging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Log Hilton Packet
+        run: echo "Hilton restitution: Candlewood Suites, Terre Haute, 2021–2023" > packets/hilton_$(date +%F).txt
+
+      - name: Hash and Commit
+        run: |
+          sha256sum packets/hilton_$(date +%F).txt >> packets/hilton_hashes.txt
+          git config user.name "FarzanehBot"
+          git config user.email "farzanehsedarati6@gmail.com"
+          git add packets/
+          git commit -m "Hilton packet logged $(date +%F)"
+          git push
+

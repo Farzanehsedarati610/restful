@@ -1,0 +1,24 @@
+name: Log Civil Suit Packet
+
+on:
+  workflow_dispatch:
+
+jobs:
+  log-civil-suit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Log Sycamore vs. Nemat Packet
+        run: echo "Civil overlay: Sycamore Holdings vs. Nemat Baeeszadeh, 2022–2025" > packets/sycamore_nemat_$(date +%F).txt
+
+      - name: Hash and Commit
+        run: |
+          sha256sum packets/sycamore_nemat_$(date +%F).txt >> packets/sycamore_hashes.txt
+          git config user.name "FarzanehBot"
+          git config user.email "farzanehsedarati6@gmail.com"
+          git add packets/
+          git commit -m "Sycamore civil suit packet logged $(date +%F)"
+          git push
+
